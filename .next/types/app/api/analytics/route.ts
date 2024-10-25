@@ -326,7 +326,7 @@ type Diff<Base, T extends Base, Message extends string = ''> = 0 extends (1 & T)
 
 type FirstArg<T extends Function> = T extends (...args: [infer T, any]) => any ? unknown extends T ? any : T : never
 type SecondArg<T extends Function> = T extends (...args: [any, infer T]) => any ? unknown extends T ? any : T : never
-type MaybeField<T, K extends string> = T extends { [k in K]: infer G } ? G extends Function ? G : never : never
+type MaybeField<T, K extends string> = T extends { [k in K]: infer G } ? G extends (...args: any[]) => any ? G : never : never
 
 type ParamCheck<T> = {
   __tag__: string
