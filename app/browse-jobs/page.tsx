@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -16,7 +22,7 @@ import { Slider } from "@/components/ui/slider";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface Job {
   _id: string;
@@ -49,12 +55,12 @@ const BrowseJobsPage: React.FC = () => {
       const authResult = await checkAuth();
       setIsAuthenticated(authResult);
       if (!authResult) {
-        router.push('/login');
+        router.push("/login");
         return;
       }
 
-      if (user?.activeRole !== 'contractor') {
-        router.push('/dashboard/homeowner');
+      if (user?.activeRole !== "contractor") {
+        router.push("/dashboard/homeowner");
         return;
       }
 
@@ -62,7 +68,16 @@ const BrowseJobsPage: React.FC = () => {
     };
 
     checkAuthAndFetchJobs();
-  }, [categoryFilter, statusFilter, budgetRange, sortBy, sortOrder, user, router, checkAuth]);
+  }, [
+    categoryFilter,
+    statusFilter,
+    budgetRange,
+    sortBy,
+    sortOrder,
+    user,
+    router,
+    checkAuth,
+  ]);
 
   async function fetchJobs() {
     try {
@@ -76,24 +91,25 @@ const BrowseJobsPage: React.FC = () => {
         sortOrder,
       });
       const response = await fetch(`/api/jobs?${queryParams}`);
-      if (!response.ok) throw new Error('Failed to fetch jobs');
+      if (!response.ok) throw new Error("Failed to fetch jobs");
       const data: Job[] = await response.json();
       setJobs(data);
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      console.error("Error fetching jobs:", error);
       toast.error("Error fetching jobs");
     } finally {
       setIsLoading(false);
     }
   }
 
-  if (!isAuthenticated || (user && user.activeRole !== 'contractor')) {
+  if (!isAuthenticated || (user && user.activeRole !== "contractor")) {
     return null;
   }
 
-  const filteredJobs = jobs.filter(job =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -169,7 +185,9 @@ const BrowseJobsPage: React.FC = () => {
 
       {!isLoading && filteredJobs.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-lg text-muted-foreground">No jobs found matching your criteria.</p>
+          <p className="text-lg text-muted-foreground">
+            No jobs found matching your criteria.
+          </p>
         </div>
       )}
     </div>
