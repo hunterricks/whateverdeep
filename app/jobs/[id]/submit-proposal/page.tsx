@@ -23,8 +23,7 @@ const formSchema = z.object({
   }),
 });
 
-
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 
 import { Control } from "react-hook-form";
 
@@ -46,16 +45,10 @@ function CoverLetterField({ control }: { control: Control<any> }) {
         <FormMessage />
       </FormItem>
     ),
-    []
+    [],
   );
 
   return (
-    <FormField
-      control={control}
-      name="coverLetter"
-      render={renderField}
-    />
+    <FormField control={control} name="coverLetter" render={renderField} />
   );
 }
-
-
