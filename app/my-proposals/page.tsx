@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ interface Proposal {
   };
   price: number;
   estimatedDuration: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: "pending" | "accepted" | "rejected";
   createdAt: string;
 }
 
@@ -30,12 +30,12 @@ export default function MyProposals() {
 
   useEffect(() => {
     if (!checkAuth()) {
-      router.push('/login');
+      router.push("/login");
       return;
     }
 
-    if (user?.activeRole !== 'contractor') {
-      router.push('/dashboard/homeowner');
+    if (user?.activeRole !== "contractor") {
+      router.push("/dashboard/homeowner");
       return;
     }
 
@@ -45,8 +45,10 @@ export default function MyProposals() {
   const fetchProposals = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/proposals?serviceProvider=${user?.id}`);
-      if (!response.ok) throw new Error('Failed to fetch proposals');
+      const response = await fetch(
+        `/api/proposals?serviceProvider=${user?.id}`,
+      );
+      if (!response.ok) throw new Error("Failed to fetch proposals");
       const data = await response.json();
       setProposals(data);
     } catch (error) {
@@ -56,17 +58,20 @@ export default function MyProposals() {
     }
   };
 
-  const getStatusBadge = (status: Proposal['status']) => {
-    const variants: Record<Proposal['status'], "secondary" | "default" | "destructive"> = {
-      pending: 'secondary',
-      accepted: 'default',
-      rejected: 'destructive'
+  const getStatusBadge = (status: Proposal["status"]) => {
+    const variants: Record<
+      Proposal["status"],
+      "secondary" | "default" | "destructive"
+    > = {
+      pending: "secondary",
+      accepted: "default",
+      rejected: "destructive",
     };
-    
+
     return <Badge variant={variants[status]}>{status}</Badge>;
   };
 
-  if (!user || user.activeRole !== 'contractor') {
+  if (!user || user.activeRole !== "contractor") {
     return null;
   }
 
@@ -106,7 +111,8 @@ export default function MyProposals() {
               <CardContent>
                 <div className="flex justify-between items-center">
                   <p className="text-sm text-muted-foreground">
-                    Submitted on {new Date(proposal.createdAt).toLocaleDateString()}
+                    Submitted on{" "}
+                    {new Date(proposal.createdAt).toLocaleDateString()}
                   </p>
                   <Button asChild>
                     <Link href={`/jobs/${proposal.job._id}`}>View Job</Link>
@@ -118,7 +124,9 @@ export default function MyProposals() {
 
           {!isLoading && proposals.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-lg text-muted-foreground">You haven't submitted any proposals yet.</p>
+              <p className="text-lg text-muted-foreground">
+                You haven't submitted any proposals yet.
+              </p>
               <Button asChild className="mt-4">
                 <Link href="/browse-jobs">Browse Available Jobs</Link>
               </Button>
