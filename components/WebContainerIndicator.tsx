@@ -5,7 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = 'webcontainer-alert-dismissed';
+const STORAGE_KEY = "webcontainer-alert-dismissed";
 
 export function WebContainerIndicator() {
   const [isDismissed, setIsDismissed] = useState(false);
@@ -13,22 +13,22 @@ export function WebContainerIndicator() {
 
   useEffect(() => {
     // Check environment and dismissed state
-    setIsWebContainer(process.env.NEXT_PUBLIC_ENV_MODE === 'webcontainer');
+    setIsWebContainer(process.env.NEXT_PUBLIC_ENV_MODE === "webcontainer");
     const dismissed = localStorage.getItem(STORAGE_KEY);
-    setIsDismissed(!!dismissed);
+    setIsDismissed(Boolean(dismissed));
   }, []);
 
   // Don't render if not in webcontainer or dismissed
   if (!isWebContainer || isDismissed) return null;
 
   const handleDismiss = () => {
-    localStorage.setItem(STORAGE_KEY, 'true');
+    localStorage.setItem(STORAGE_KEY, "true");
     setIsDismissed(true);
   };
 
   return (
-    <Alert 
-      variant="warning" 
+    <Alert
+      variant="warning"
       className="fixed bottom-4 right-4 w-auto max-w-md shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300 z-50"
     >
       <div className="flex items-center justify-between w-full">
@@ -38,10 +38,10 @@ export function WebContainerIndicator() {
             Running in Web Container Mode - Both roles enabled
           </AlertDescription>
         </div>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="h-6 w-6 p-0 hover:bg-yellow-500/20" 
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6 p-0 hover:bg-yellow-500/20"
           onClick={handleDismiss}
         >
           <X className="h-4 w-4" />
