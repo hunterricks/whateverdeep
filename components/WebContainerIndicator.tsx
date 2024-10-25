@@ -15,7 +15,7 @@ export function WebContainerIndicator() {
     // Check environment and dismissed state
     setIsWebContainer(process.env.NEXT_PUBLIC_ENV_MODE === 'webcontainer');
     const dismissed = localStorage.getItem(STORAGE_KEY);
-    setIsDismissed(!!dismissed);
+    setIsDismissed(Boolean(dismissed));
   }, []);
 
   // Don't render if not in webcontainer or dismissed

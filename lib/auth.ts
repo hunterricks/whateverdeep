@@ -132,7 +132,7 @@ export const useAuth = () => {
       roles: (auth0User['https://myapp.org/roles'] as UserRole[]) || ['homeowner'],
       activeRole: (auth0User['https://myapp.org/activeRole'] as UserRole) || 'homeowner',
     } : null,
-    isAuthenticated: getIsWebContainer() ? isAuthenticated : !!auth0User,
+    isAuthenticated: getIsWebContainer() ? isAuthenticated : Boolean(auth0User),
     isLoading: getIsWebContainer() ? false : isLoading,
     error: getIsWebContainer() ? null : error,
     login,
