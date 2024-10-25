@@ -2,6 +2,7 @@
 // skipcq: JS-C1003
 import * as entry from '../../../../../../app/api/account/delete/route.js'
 import type { NextRequest } from 'next/server.js'
+import * as React from 'react'
 
 type TEntry = typeof import('../../../../../../app/api/account/delete/route.js')
 
@@ -229,7 +230,7 @@ if ('DELETE' in entry) {
       {
         __tag__: 'DELETE'
         __param_position__: 'first'
-        __param_type__: FirstArg<MaybeField<TEntry, 'DELETE'>>
+        __param_type__: FirstArg<MaybeField<TEntry, 'DELETE'>> extends NextRequest | Request ? FirstArg<MaybeField<TEntry, 'DELETE'>> : never
       },
       'DELETE'
     >
@@ -319,13 +320,14 @@ export interface LayoutProps {
 
 // =============
 // Utility types
-type RevalidateRange<T> = T extends { revalidate: unknown } ? NonNegative<T['revalidate']> : never
+type RevalidateRange<T> = T extends { revalidate: Numeric } ? NonNegative<T['revalidate']> : never
 
 // If T is unknown or any, it will be an empty {} type. Otherwise, it will be the same as Omit<T, keyof Base>.
 type OmitWithTag<T, K extends keyof any, _M> = Omit<T, K>
 type Diff<Base, T extends Base, Message extends string = ''> = 0 extends (1 & T) ? Record<string, never> : OmitWithTag<T, keyof Base, Message>
 
 type FirstArg<T extends (...args: unknown[]) => unknown> = T extends (...args: [infer U, unknown]) => unknown ? unknown extends U ? unknown : U : never
+type SecondArg<T extends (...args: unknown[]) => unknown> = T extends (...args: [unknown, infer U]) => unknown ? unknown extends U ? unknown : U : never
 type MaybeField<T, K extends string> = T extends { [k in K]: infer G } ? G extends (...args: any[]) => any ? G : never : never
 
 type ParamCheck<T> = {
@@ -334,7 +336,7 @@ type ParamCheck<T> = {
   __param_type__: T
 }
 
-function checkFields<_ extends { [k in keyof any]: never }>() {
+function checkFields<_ extends { [k in string | number | symbol]: never }>() {
   // empty because this function is a placeholder for type checking
 }
 

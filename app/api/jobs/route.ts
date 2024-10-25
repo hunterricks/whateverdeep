@@ -24,7 +24,25 @@ export async function POST(request: NextRequest) {
     }
 
     // Create job object with required fields
-    const jobData: any = {
+    interface JobData {
+      title: string;
+      description: string;
+      category: string;
+      location: string;
+      scope: string;
+      duration?: string;
+      experienceLevel: string;
+      skills?: string[];
+      status: string;
+      paymentStatus: string;
+      budgetType: string;
+      budget?: number;
+      minHourlyRate?: number;
+      maxHourlyRate?: number;
+      postedBy?: Types.ObjectId;
+    }
+
+    const jobData: JobData = {
       title: body.title,
       description: body.description,
       category: body.category,
@@ -71,18 +89,18 @@ export async function POST(request: NextRequest) {
     console.log('New job created:', newJob._id);
 
     return NextResponse.json(newJob, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating job:', error);
     
-    if (error.name === 'ValidationError') {
+    if (error instanceof Error && error.name === 'ValidationError') {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: 'Validation error', details: (error as any).errors },
         { status: 400 }
       );
     }
     
     return NextResponse.json(
-      { error: 'Error creating job', message: error.message },
+      { error: 'Error creating job', message: (error instanceof Error ? error.message : 'Unknown error') },
       { status: 500 }
     );
   }
@@ -101,7 +119,7 @@ export async function GET(request: Request) {
     const sortBy = searchParams.get('sortBy') || 'createdAt';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
     
-    const query: any = { status };
+    const query: { [key: string]: any } = { status };
     
     if (category) query.category = category;
     if (location) query.location = { $regex: location, $options: 'i' };

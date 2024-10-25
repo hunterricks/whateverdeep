@@ -1,20 +1,29 @@
 // File: /Users/hunterricks/Downloads/stackblitz-starters-3acn8s (7)/app/api/analytics/route.ts
-import * as entry from '../../../../../app/api/analytics/route.js'
-import type { NextRequest } from 'next/server.js'
+import { GET } from '../../../../../app/api/analytics/route.js'
+import { NextResponse, type NextRequest } from 'next/server.js'
+import * as React from 'react'
 
 type TEntry = typeof import('../../../../../app/api/analytics/route.js')
 
+const entry: TEntry = {
+  GET: async (req: NextRequest) => {
+    // Your implementation here
+    return NextResponse.json({ error: 'Not implemented' });
+  },
+  // Add other methods as needed
+};
+
 // Check that the entry is a valid entry
 checkFields<Diff<{
-  GET?: Function
-  HEAD?: Function
-  OPTIONS?: Function
-  POST?: Function
-  PUT?: Function
-  DELETE?: Function
-  PATCH?: Function
-  config?: {}
-  generateStaticParams?: Function
+  GET?: (req: NextRequest) => Promise<Response | { error: string; } | { totalJobsPosted: number; totalJobsCompleted: number; averageJobBudget: any; jobsByCategory: any[]; }>
+  HEAD?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  OPTIONS?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  POST?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  PUT?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  DELETE?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  PATCH?: (req: Request | NextRequest, params: PageParams) => Response | void | Promise<Response | void>
+  config?: Record<string, never>
+  generateStaticParams?: (params: PageParams) => any[] | Promise<any[]>
   revalidate?: RevalidateRange<TEntry> | false
   dynamic?: 'auto' | 'force-dynamic' | 'error' | 'force-static'
   dynamicParams?: boolean
@@ -22,7 +31,6 @@ checkFields<Diff<{
   preferredRegion?: 'auto' | 'global' | 'home' | string | string[]
   runtime?: 'nodejs' | 'experimental-edge' | 'edge'
   maxDuration?: number
-  
 }, TEntry, ''>>()
 
 // Check the prop type of the entry function
@@ -44,7 +52,7 @@ if ('GET' in entry) {
       {
         __tag__: 'GET'
         __param_position__: 'second'
-        __param_type__: SecondArg<MaybeField<TEntry, 'GET'>>
+        __param_type__: SecondArg<MaybeField<TEntry, 'GET'>> extends PageParams ? SecondArg<MaybeField<TEntry, 'GET'>> : never
       },
       'GET'
     >
@@ -54,7 +62,7 @@ if ('GET' in entry) {
     Diff<
       {
         __tag__: 'GET',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | never | Promise<Response | never>
       },
       {
         __tag__: 'GET',
@@ -93,7 +101,7 @@ if ('HEAD' in entry) {
     Diff<
       {
         __tag__: 'HEAD',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | never | Promise<Response | never>
       },
       {
         __tag__: 'HEAD',
@@ -132,7 +140,7 @@ if ('OPTIONS' in entry) {
     Diff<
       {
         __tag__: 'OPTIONS',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | never | Promise<Response | never>
       },
       {
         __tag__: 'OPTIONS',
@@ -171,7 +179,7 @@ if ('POST' in entry) {
     Diff<
       {
         __tag__: 'POST',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | never | Promise<Response | never>
       },
       {
         __tag__: 'POST',
@@ -205,12 +213,12 @@ if ('PUT' in entry) {
       'PUT'
     >
   >()
-  
+
   checkFields<
     Diff<
       {
         __tag__: 'PUT',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | Promise<Response>
       },
       {
         __tag__: 'PUT',
@@ -244,12 +252,12 @@ if ('DELETE' in entry) {
       'DELETE'
     >
   >()
-  
+
   checkFields<
     Diff<
       {
         __tag__: 'DELETE',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | undefined | never | Promise<Response | undefined | never>
       },
       {
         __tag__: 'DELETE',
@@ -283,12 +291,12 @@ if ('PATCH' in entry) {
       'PATCH'
     >
   >()
-  
+
   checkFields<
     Diff<
       {
         __tag__: 'PATCH',
-        __return_type__: Response | void | never | Promise<Response | void | never>
+        __return_type__: Response | undefined | never | Promise<Response | undefined | never>
       },
       {
         __tag__: 'PATCH',
@@ -302,30 +310,30 @@ if ('PATCH' in entry) {
 // Check the arguments and return type of the generateStaticParams function
 if ('generateStaticParams' in entry) {
   checkFields<Diff<{ params: PageParams }, FirstArg<MaybeField<TEntry, 'generateStaticParams'>>, 'generateStaticParams'>>()
-  checkFields<Diff<{ __tag__: 'generateStaticParams', __return_type__: any[] | Promise<any[]> }, { __tag__: 'generateStaticParams', __return_type__: ReturnType<MaybeField<TEntry, 'generateStaticParams'>> }>>()
+  checkFields<Diff<{ __tag__: 'generateStaticParams', __return_type__: unknown[] | Promise<unknown[]> }, { __tag__: 'generateStaticParams', __return_type__: ReturnType<MaybeField<TEntry, 'generateStaticParams'>> }>>()
 }
 
-type PageParams = any
+type PageParams = Record<string, unknown>
 export interface PageProps {
-  params?: any
-  searchParams?: any
+  params?: unknown
+  searchParams?: unknown
 }
 export interface LayoutProps {
   children?: React.ReactNode
 
-  params?: any
+  params?: Record<string, unknown>
 }
 
 // =============
 // Utility types
-type RevalidateRange<T> = T extends { revalidate: any } ? NonNegative<T['revalidate']> : never
+type RevalidateRange<T> = T extends { revalidate: Numeric } ? NonNegative<T['revalidate']> : never
 
 // If T is unknown or any, it will be an empty {} type. Otherwise, it will be the same as Omit<T, keyof Base>.
-type OmitWithTag<T, K extends keyof any, _M> = Omit<T, K>
-type Diff<Base, T extends Base, Message extends string = ''> = 0 extends (1 & T) ? {} : OmitWithTag<T, keyof Base, Message>
+type OmitWithTag<T, K extends keyof unknown, _M> = Omit<T, K>
+type Diff<Base, T extends Base, Message extends string = ''> = 0 extends (1 & T) ? Record<string, never> : OmitWithTag<T, keyof Base, Message>
 
-type FirstArg<T extends Function> = T extends (...args: [infer T, any]) => any ? unknown extends T ? any : T : never
-type SecondArg<T extends Function> = T extends (...args: [any, infer T]) => any ? unknown extends T ? any : T : never
+type FirstArg<T extends (...args: any[]) => any> = T extends (...args: [infer U, unknown]) => unknown ? unknown extends U ? unknown : U : never
+type SecondArg<T extends (...args: any[]) => unknown> = T extends (...args: [unknown, infer U]) => unknown ? U : never
 type MaybeField<T, K extends string> = T extends { [k in K]: infer G } ? G extends (...args: any[]) => any ? G : never : never
 
 type ParamCheck<T> = {
@@ -334,7 +342,9 @@ type ParamCheck<T> = {
   __param_type__: T
 }
 
-function checkFields<_ extends { [k in keyof any]: never }>() {}
+function checkFields<_ extends { [k in keyof any]: never }>() {
+  // empty because function implementation is not needed
+}
 
 // https://github.com/sindresorhus/type-fest
 type Numeric = number | bigint
