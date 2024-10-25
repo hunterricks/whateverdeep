@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -49,17 +49,17 @@ export default function SubmitProposal() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!checkAuth() || user?.activeRole !== 'contractor') {
+    if (!checkAuth() || user?.activeRole !== "contractor") {
       toast.error("You must be logged in as a contractor to submit proposals");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/proposals', {
-        method: 'POST',
+      const response = await fetch("/api/proposals", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...values,
@@ -69,7 +69,7 @@ export default function SubmitProposal() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit proposal');
+        throw new Error("Failed to submit proposal");
       }
 
       toast.success("Proposal submitted successfully!");
@@ -81,7 +81,7 @@ export default function SubmitProposal() {
     }
   }
 
-  if (!checkAuth() || user?.activeRole !== 'contractor') {
+  if (!checkAuth() || user?.activeRole !== "contractor") {
     return null;
   }
 
