@@ -329,7 +329,7 @@ export interface LayoutProps {
 type RevalidateRange<T> = T extends { revalidate: Numeric } ? NonNegative<T['revalidate']> : never
 
 // If T is unknown or any, it will be an empty {} type. Otherwise, it will be the same as Omit<T, keyof Base>.
-type OmitWithTag<T, K extends keyof unknown, _M> = Omit<T, K>
+type OmitWithTag<T, K extends keyof any, _M> = Omit<T, K>
 type Diff<Base, T extends Base, Message extends string = ''> = 0 extends (1 & T) ? Record<string, never> : OmitWithTag<T, keyof Base, Message>
 
 type FirstArg<T extends (...args: any[]) => any> = T extends (...args: [infer U, unknown]) => unknown ? unknown extends U ? unknown : U : never
