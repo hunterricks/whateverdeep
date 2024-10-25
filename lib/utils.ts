@@ -23,7 +23,7 @@ export function isPWA() {
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
     window.matchMedia('(display-mode: fullscreen)').matches ||
-    // @ts-ignore
+    // @ts-expect-error
     (window.navigator as any).standalone === true
   );
 }
@@ -34,7 +34,7 @@ export function isStandalone() {
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
     window.matchMedia('(display-mode: fullscreen)').matches ||
-    // @ts-ignore
+    // @ts-expect-error
     (window.navigator as any).standalone === true
   );
 }
