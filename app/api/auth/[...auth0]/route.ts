@@ -3,7 +3,12 @@ import { handleAuth, handleCallback, handleLogin, handleLogout } from '@auth0/ne
 
 const isWebContainer = process.env.NEXT_PUBLIC_ENV_MODE === 'webcontainer';
 
-export async function GET(request: NextRequest, { params }: { params: { auth0: string[] } }) {
+export async function GET(ctx: any) {
+  if (!ctx || !ctx.params) {
+    throw new Error("Context or params are undefined");
+  }
+  const { params } = ctx;
+
   // In WebContainer mode, don't use Auth0
   if (isWebContainer) {
     return new Response('Auth0 routes not available in WebContainer', { status: 404 });
@@ -27,7 +32,7 @@ export async function GET(request: NextRequest, { params }: { params: { auth0: s
           authorizationParams: {
             prompt: 'login',
           },
-        })(request);
+        })(ctx.request);
 
       case 'callback':
         return handleCallback({
@@ -40,15 +45,15 @@ export async function GET(request: NextRequest, { params }: { params: { auth0: s
             }
             return session;
           },
-        })(request);
+        })(ctx.request);
 
       case 'logout':
         return handleLogout({
-          returnTo: new URL('/', request.url).toString(),
-        })(request);
+          returnTo: new URL('/', ctx.request.url).toString(),
+        })(ctx.request);
 
       default:
-        return handleAuth()(request);
+        return handleAuth()(ctx.request);
     }
   } catch (error) {
     console.error('Auth0 handler error:', error);

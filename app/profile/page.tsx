@@ -11,6 +11,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/lib/auth";
+import { UserProfile } from "@/types/types"; // Adjust the import path as necessary
 
 const isWebContainer = process.env.NEXT_PUBLIC_ENV_MODE === 'webcontainer';
 
@@ -19,7 +20,7 @@ export default function Profile() {
   const { user: auth0User, error: auth0Error, isLoading: auth0Loading } = useUser();
   const { user: mockUser, checkAuth } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState(isWebContainer ? mockUser : auth0User);
+  const [profile, setProfile] = useState<UserProfile | null>(isWebContainer ? mockUser : auth0User);
   const [reviews, setReviews] = useState([
     { id: 1, rating: 5, reviewer: { name: "John Doe" }, comment: "Great work!" },
     { id: 2, rating: 4, reviewer: { name: "Jane Smith" }, comment: "Very professional" }
